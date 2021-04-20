@@ -1,22 +1,17 @@
 require('dotenv').config()
-const express = require('express')
+const express=require('express')
 const app = express()
-const rtMain = require('./routers/rtMain')
+
+
+
+//conexion a la bd
 const DB = require('./models')
+DB.connection.authenticate()
+    .then(()=>console.log("Conexión con MySQL OK!"))
+    .catch((err)=>console.log(":( Error en MySQL",err))
 
 
-//middlewares
-app.use(express.json())
-
-//enrutador principal
-app.use('/',rtMain)
-
-//configuracion de la BD
-DB.authenticate()
-    .then(()=>console.log("BD MySQL arrancado!"))
-    .catch(err=>console.log(":( Error de conexión a mysql",err))
-
-//arrancamos el servidor:
 app.listen(8081,(err)=>{
-    console.log('Server run on port 8081')
+    if(err) console.log("Hay errores: ",err)
+    console.log("Server run on port 8081")
 })

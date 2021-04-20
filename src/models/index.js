@@ -1,6 +1,13 @@
+//https://sequelize.org/v4/manual/installation/usage.html
+
 const Sequelize = require('sequelize')
-// mysql://pepe:1234@localhost:3306/sequelizeDB
+const connection = new Sequelize('mysql://sequelize:1234@localhost:3306/sequelize')
 
-const connection=new Sequelize(`mysql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`)
+const db={}
+db.Sequelize=Sequelize
+db.connection=connection
 
-module.exports=connection
+db.user=require("./User.model")(connection,Sequelize)
+
+db.connection.sync()
+module.exports=db
